@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APEX — Looksmaxxing & Peak Aesthetics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { 50: '#fdf9ed', 100: '#f8edca', 200: '#f0d68a', 300: '#e6bb4a', 400: '#d9a020', 500: '#b8841a', 600: '#8f6313', 700: '#6b4910', 800: '#4d340d', 900: '#2e1f08' },
+            obsidian: { 50: '#f2f2f3', 100: '#e0e0e2', 200: '#c2c2c6', 300: '#9a9aa0', 400: '#6e6e76', 500: '#4a4a52', 600: '#32323a', 700: '#22222a', 800: '#16161e', 900: '#0d0d13' },
+          },
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          letterSpacing: { tightest: '-0.04em', tighter: '-0.03em', tight: '-0.02em' },
+          lineHeight: { relaxed: '1.7', loose: '1.85' },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #0d0d13; color: #e0e0e2; overflow-x: hidden; }
+
+    /* Grain texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Layered shadows */
+    .shadow-gold {
+      box-shadow:
+        0 1px 2px rgba(185,132,26,0.08),
+        0 4px 12px rgba(185,132,26,0.12),
+        0 16px 40px rgba(185,132,26,0.06);
+    }
+    .shadow-card {
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.4),
+        0 6px 20px rgba(0,0,0,0.3),
+        0 24px 48px rgba(0,0,0,0.2);
+    }
+    .shadow-elevated {
+      box-shadow:
+        0 2px 4px rgba(0,0,0,0.5),
+        0 12px 32px rgba(0,0,0,0.4),
+        0 40px 80px rgba(0,0,0,0.3);
+    }
+
+    /* Typography */
+    .font-display { font-family: 'Cormorant Garamond', serif; }
+
+    /* Radial glow backgrounds */
+    .glow-gold {
+      background:
+        radial-gradient(ellipse 60% 40% at 70% 30%, rgba(185,132,26,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(185,132,26,0.07) 0%, transparent 60%),
+        #0d0d13;
+    }
+    .glow-center {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(185,132,26,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 90% 100%, rgba(185,132,26,0.08) 0%, transparent 50%),
+        #0d0d13;
+    }
+
+    /* Hover/focus/active states */
+    .btn-primary {
+      background: linear-gradient(135deg, #d9a020 0%, #b8841a 60%, #8f6313 100%);
+      color: #0d0d13;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      padding: 14px 32px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+      box-shadow: 0 2px 8px rgba(185,132,26,0.3), 0 8px 24px rgba(185,132,26,0.15);
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(185,132,26,0.4), 0 16px 40px rgba(185,132,26,0.2); }
+    .btn-primary:hover::after { opacity: 1; }
+    .btn-primary:focus-visible { outline: 2px solid #d9a020; outline-offset: 3px; }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      background: transparent;
+      color: #c2c2c6;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      padding: 13px 28px;
+      border: 1px solid rgba(194,194,198,0.2);
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+    .btn-ghost:hover { border-color: rgba(217,160,32,0.5); color: #d9a020; background: rgba(217,160,32,0.04); }
+    .btn-ghost:focus-visible { outline: 2px solid #d9a020; outline-offset: 3px; }
+    .btn-ghost:active { background: rgba(217,160,32,0.08); }
+
+    /* Nav link states */
+    .nav-link {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9a9aa0;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+      background: #d9a020;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .nav-link:hover { color: #e0e0e2; }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-link:focus-visible { outline: 2px solid #d9a020; outline-offset: 4px; color: #e0e0e2; }
+
+    /* Card hover */
+    .pillar-card {
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+    }
+    .pillar-card:hover { transform: translateY(-6px); }
+
+    /* Image treatment */
+    .img-treatment {
+      position: relative; overflow: hidden;
+    }
+    .img-treatment img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .img-treatment::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,13,19,0.7) 0%, rgba(13,13,19,0.1) 50%, transparent 100%);
+    }
+    .img-treatment::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background: rgba(185,132,26,0.12);
+      mix-blend-mode: multiply;
+    }
+
+    /* Divider */
+    .divider-gold {
+      width: 48px; height: 1px;
+      background: linear-gradient(to right, transparent, #d9a020, transparent);
+    }
+
+    /* Scroll fade-in */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.34,1.56,0.64,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Surface layers */
+    .surface-base { background: #0d0d13; }
+    .surface-elevated { background: #16161e; }
+    .surface-floating { background: #22222a; }
+
+    /* Progress bar */
+    .progress-bar { background: rgba(194,194,198,0.1); border-radius: 2px; overflow: hidden; }
+    .progress-fill {
+      height: 3px;
+      background: linear-gradient(to right, #8f6313, #d9a020);
+      border-radius: 2px;
+    }
+
+    /* Testimonial quote */
+    blockquote { font-family: 'Cormorant Garamond', serif; }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: #b8841a; font-family: 'DM Sans', sans-serif; font-weight: 500;
+    }
+
+    /* Button shimmer sweep */
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -80%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      transform: skewX(-15deg);
+      pointer-events: none;
+    }
+    .btn-primary:hover::before { animation: btn-shimmer 0.55s ease forwards; }
+    @keyframes btn-shimmer {
+      0% { left: -80%; }
+      100% { left: 140%; }
+    }
+
+    /* Click ripple */
+    @keyframes ripple {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    /* Hero CTA pulse glow */
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 2px 8px rgba(185,132,26,0.35), 0 8px 24px rgba(185,132,26,0.18); }
+      50% { box-shadow: 0 4px 20px rgba(185,132,26,0.6), 0 16px 48px rgba(185,132,26,0.32), 0 0 80px rgba(185,132,26,0.14); }
+    }
+    .btn-pulse { animation: pulse-glow 2.8s ease-in-out infinite; }
+
+    /* Image zoom on pillar hover */
+    .pillar-card .img-treatment img {
+      transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .pillar-card:hover .img-treatment img { transform: scale(1.06); }
+
+    /* Gallery block */
+    .gallery-img {
+      overflow: hidden; position: relative; border-radius: 2px;
+    }
+    .gallery-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.7s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .gallery-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,13,19,0.65) 0%, rgba(13,13,19,0.1) 40%, transparent 100%);
+    }
+    .gallery-img::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: rgba(185,132,26,0.1); mix-blend-mode: multiply;
+    }
+    .gallery-img:hover img { transform: scale(1.04); }
+
+    /* Watch button play circle pulse */
+    @keyframes play-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(217,160,32,0.4); }
+      60% { box-shadow: 0 0 0 8px rgba(217,160,32,0); }
+    }
+    .play-circle { animation: play-pulse 2s ease-out infinite; }
+
+    /* Magnetic card tilt (JS-driven via CSS vars) */
+    .tilt-card {
+      transition: transform 0.15s ease;
+      transform-style: preserve-3d;
+    }
+  </style>
+</head>
+<body class="surface-base">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(13,13,19,0.85);border-bottom:1px solid rgba(194,194,198,0.06);">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px;">
+      <a href="#" style="text-decoration:none;display:flex;align-items:center;gap:10px;" aria-label="Apex home">
+        <div style="width:28px;height:28px;background:linear-gradient(135deg,#d9a020,#8f6313);clip-path:polygon(50% 0%,100% 100%,0% 100%);flex-shrink:0;"></div>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;letter-spacing:0.04em;color:#e0e0e2;">APEX</span>
+      </a>
+      <div style="display:flex;gap:32px;align-items:center;">
+        <a href="#pillars" class="nav-link">Method</a>
+        <a href="#results" class="nav-link">Results</a>
+        <a href="#programs" class="nav-link">Programs</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <button class="btn-ghost" style="border-color:rgba(194,194,198,0.3);color:#c2c2c6;">Sign in</button>
+        <button class="btn-primary">Start Now</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="glow-gold" style="min-height:100vh;display:flex;align-items:center;padding-top:64px;position:relative;overflow:hidden;">
+    <!-- Decorative lines -->
+    <div style="position:absolute;top:0;left:50%;width:1px;height:100%;background:linear-gradient(to bottom,transparent,rgba(217,160,32,0.12),transparent);pointer-events:none;"></div>
+    <div style="position:absolute;top:20%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(217,160,32,0.06),transparent);pointer-events:none;"></div>
+
+    <div style="max-width:1200px;margin:0 auto;padding:80px 32px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;">
+      <!-- Left: Copy -->
+      <div>
+        <div class="section-label" style="margin-bottom:24px;">Peak aesthetics protocol</div>
+        <h1 class="font-display" style="font-size:clamp(3rem,5vw,5rem);font-weight:300;line-height:1.05;letter-spacing:-0.03em;color:#f8edca;margin-bottom:28px;">
+          Become the<br/>
+          <em style="font-style:italic;color:#d9a020;">best version</em><br/>
+          of your face.
+        </h1>
+        <p style="font-size:1.0625rem;line-height:1.7;color:#9a9aa0;margin-bottom:40px;max-width:420px;">
+          Science-backed looksmaxxing — structured routines for skincare, jawline, posture, and grooming that compound over time.
+        </p>
+        <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+          <button class="btn-primary btn-pulse" style="font-size:0.72rem;">Build My Protocol</button>
+          <button class="btn-ghost" style="display:flex;align-items:center;gap:8px;">
+            <span class="play-circle" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(217,160,32,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 1l6 4-6 4V1z" fill="#d9a020"/></svg>
+            </span>
+            Watch overview
+          </button>
+        </div>
+        <!-- Stats -->
+        <div style="margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(194,194,198,0.08);padding-top:32px;">
+          <div style="padding-right:24px;border-right:1px solid rgba(194,194,198,0.08);">
+            <div class="font-display" style="font-size:2.5rem;font-weight:300;color:#d9a020;letter-spacing:-0.03em;line-height:1;">24k+</div>
+            <div style="font-size:0.72rem;color:#6e6e76;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;">Members</div>
+          </div>
+          <div style="padding:0 24px;border-right:1px solid rgba(194,194,198,0.08);">
+            <div class="font-display" style="font-size:2.5rem;font-weight:300;color:#d9a020;letter-spacing:-0.03em;line-height:1;">90d</div>
+            <div style="font-size:0.72rem;color:#6e6e76;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;">Avg visible change</div>
+          </div>
+          <div style="padding-left:24px;">
+            <div class="font-display" style="font-size:2.5rem;font-weight:300;color:#d9a020;letter-spacing:-0.03em;line-height:1;">98%</div>
+            <div style="font-size:0.72rem;color:#6e6e76;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;">Satisfaction rate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Image stack -->
+      <div style="position:relative;">
+        <!-- Main image -->
+        <div class="img-treatment shadow-elevated" style="border-radius:2px;height:560px;border:1px solid rgba(217,160,32,0.15);">
+          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=85" alt="Male model portrait" style="filter:grayscale(15%) contrast(1.08);object-position:center top;" />
+        </div>
+        <!-- Floating card -->
+        <div class="surface-floating shadow-card" style="position:absolute;bottom:32px;left:-32px;padding:20px 24px;border-radius:2px;border:1px solid rgba(217,160,32,0.2);min-width:200px;box-shadow:0 2px 4px rgba(0,0,0,0.5),0 12px 32px rgba(0,0,0,0.4),0 0 0 1px rgba(217,160,32,0.05),0 8px 24px rgba(217,160,32,0.06);">
+          <div style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#6e6e76;margin-bottom:6px;">Today's focus</div>
+          <div style="font-size:0.9rem;color:#e0e0e2;font-weight:500;margin-bottom:12px;">Mewing + Neck posture</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:62%;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;">
+            <span style="font-size:0.65rem;color:#6e6e76;">Day 24 / 90</span>
+            <span style="font-size:0.65rem;color:#b8841a;">62%</span>
+          </div>
+        </div>
+        <!-- Badge -->
+        <div style="position:absolute;top:-16px;right:-16px;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#d9a020,#8f6313);display:flex;align-items:center;justify-content:center;flex-direction:column;" class="shadow-gold">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:#0d0d13;line-height:1;">A+</span>
+          <span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,13,19,0.7);">Rating</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDITORIAL STRIP ===== -->
+  <section style="padding:0 32px 80px;position:relative;z-index:1;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;height:500px;">
+
+        <!-- Portrait A — confirmed dramatic male -->
+        <div class="gallery-img" style="position:relative;">
+          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=85" alt="Editorial portrait" style="object-position:center top;filter:contrast(1.06) grayscale(10%);" />
+          <div style="position:absolute;bottom:20px;left:20px;z-index:2;">
+            <div style="font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(248,237,202,0.5);margin-bottom:4px;">Day 0</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#f8edca;font-style:italic;">The baseline</div>
+          </div>
+        </div>
+
+        <!-- Portrait B — man in suit -->
+        <div class="gallery-img" style="position:relative;">
+          <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=440&q=85" alt="Editorial portrait suited" style="object-position:center top;filter:contrast(1.06) grayscale(10%);" />
+          <div style="position:absolute;bottom:20px;left:20px;z-index:2;">
+            <div style="font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(248,237,202,0.5);margin-bottom:4px;">Day 45</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#f8edca;font-style:italic;">Midpoint</div>
+          </div>
+        </div>
+
+        <!-- Portrait C — close-up face -->
+        <div class="gallery-img" style="position:relative;">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=440&q=85" alt="Editorial portrait close" style="object-position:center top;filter:contrast(1.08) grayscale(10%);" />
+          <div style="position:absolute;bottom:20px;left:20px;z-index:2;">
+            <div style="font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(248,237,202,0.5);margin-bottom:4px;">Day 90</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#d9a020;font-style:italic;">Peak form</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE ===== -->
+  <div style="background:#16161e;border-top:1px solid rgba(194,194,198,0.06);border-bottom:1px solid rgba(194,194,198,0.06);overflow:hidden;padding:16px 0;">
+    <div style="display:flex;gap:64px;white-space:nowrap;animation:marquee 30s linear infinite;">
+      <span class="section-label">Skincare</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Jawline Training</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Mewing Protocol</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Posture Correction</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Grooming Rituals</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Nutrition & Sleep</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Style Calibration</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Face Harmony</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <!-- duplicate for seamless loop -->
+      <span class="section-label">Skincare</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Jawline Training</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Mewing Protocol</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Posture Correction</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Grooming Rituals</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Nutrition & Sleep</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Style Calibration</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+      <span class="section-label">Face Harmony</span><span style="color:rgba(217,160,32,0.3);">✦</span>
+    </div>
+  </div>
+  <style>
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  </style>
+
+  <!-- ===== PILLARS ===== -->
+  <section id="pillars" style="padding:120px 32px;position:relative;" class="glow-center">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:72px;">
+        <div class="section-label" style="margin-bottom:16px;">The method</div>
+        <h2 class="font-display" style="font-size:clamp(2.2rem,4vw,3.5rem);font-weight:300;letter-spacing:-0.03em;color:#f8edca;line-height:1.1;margin-bottom:0;">Four pillars of<br/><em style="color:#d9a020;">elite aesthetics</em></h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
+
+        <!-- Pillar 1 -->
+        <div class="pillar-card surface-elevated shadow-card" style="border-radius:2px;border:1px solid rgba(194,194,198,0.06);overflow:hidden;">
+          <div class="img-treatment" style="height:220px;">
+            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=400&q=80" alt="Skincare" style="object-position:center top;" />
+          </div>
+          <div style="padding:28px 24px 32px;">
+            <div style="width:36px;height:36px;border:1px solid rgba(217,160,32,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#d9a020;font-weight:600;">I</span>
+            </div>
+            <h3 class="font-display" style="font-size:1.4rem;font-weight:400;color:#f8edca;letter-spacing:-0.02em;margin-bottom:10px;">Skin</h3>
+            <p style="font-size:0.875rem;line-height:1.7;color:#6e6e76;">Barrier-first routines, actives sequencing, and AM/PM protocols calibrated to your skin type.</p>
+            <div style="margin-top:20px;display:flex;align-items:center;gap:8px;">
+              <div class="divider-gold"></div>
+              <span style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#b8841a;">12 modules</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="pillar-card surface-elevated shadow-card" style="border-radius:2px;border:1px solid rgba(194,194,198,0.06);overflow:hidden;margin-top:32px;">
+          <div class="img-treatment" style="height:220px;">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Structure" style="object-position:center top;" />
+          </div>
+          <div style="padding:28px 24px 32px;">
+            <div style="width:36px;height:36px;border:1px solid rgba(217,160,32,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#d9a020;font-weight:600;">II</span>
+            </div>
+            <h3 class="font-display" style="font-size:1.4rem;font-weight:400;color:#f8edca;letter-spacing:-0.02em;margin-bottom:10px;">Structure</h3>
+            <p style="font-size:0.875rem;line-height:1.7;color:#6e6e76;">Mewing, jawline exercises, and postural alignment to refine your facial bone structure over time.</p>
+            <div style="margin-top:20px;display:flex;align-items:center;gap:8px;">
+              <div class="divider-gold"></div>
+              <span style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#b8841a;">8 modules</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="pillar-card surface-elevated shadow-card" style="border-radius:2px;border:1px solid rgba(194,194,198,0.06);overflow:hidden;">
+          <div class="img-treatment" style="height:220px;">
+            <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=400&q=80" alt="Grooming" style="object-position:center top;" />
+          </div>
+          <div style="padding:28px 24px 32px;">
+            <div style="width:36px;height:36px;border:1px solid rgba(217,160,32,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#d9a020;font-weight:600;">III</span>
+            </div>
+            <h3 class="font-display" style="font-size:1.4rem;font-weight:400;color:#f8edca;letter-spacing:-0.02em;margin-bottom:10px;">Grooming</h3>
+            <p style="font-size:0.875rem;line-height:1.7;color:#6e6e76;">Hair, brows, facial hair shaping, and hygiene rituals that frame your features precisely.</p>
+            <div style="margin-top:20px;display:flex;align-items:center;gap:8px;">
+              <div class="divider-gold"></div>
+              <span style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#b8841a;">10 modules</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="pillar-card surface-elevated shadow-card" style="border-radius:2px;border:1px solid rgba(194,194,198,0.06);overflow:hidden;margin-top:32px;">
+          <div class="img-treatment" style="height:220px;">
+            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=400&q=80" alt="Lifestyle" style="object-position:center top;" />
+          </div>
+          <div style="padding:28px 24px 32px;">
+            <div style="width:36px;height:36px;border:1px solid rgba(217,160,32,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#d9a020;font-weight:600;">IV</span>
+            </div>
+            <h3 class="font-display" style="font-size:1.4rem;font-weight:400;color:#f8edca;letter-spacing:-0.02em;margin-bottom:10px;">Lifestyle</h3>
+            <p style="font-size:0.875rem;line-height:1.7;color:#6e6e76;">Sleep optimization, nutrition for collagen and testosterone, and stress protocols for cellular repair.</p>
+            <div style="margin-top:20px;display:flex;align-items:center;gap:8px;">
+              <div class="divider-gold"></div>
+              <span style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#b8841a;">9 modules</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESULTS / TESTIMONIALS ===== -->
+  <section id="results" style="padding:120px 32px;background:#16161e;border-top:1px solid rgba(194,194,198,0.06);">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:80px;align-items:start;">
+        <!-- Left -->
+        <div>
+          <div class="section-label" style="margin-bottom:16px;">Member results</div>
+          <h2 class="font-display" style="font-size:clamp(2rem,3.5vw,3rem);font-weight:300;letter-spacing:-0.03em;color:#f8edca;line-height:1.1;margin-bottom:24px;">Real progress,<br/><em style="color:#d9a020;">documented.</em></h2>
+          <p style="font-size:0.9rem;line-height:1.7;color:#6e6e76;margin-bottom:36px;">Every result below is from a member who followed the exact protocol — no surgery, no filters.</p>
+          <button class="btn-primary">View all results</button>
+        </div>
+        <!-- Right: testimonial cards -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+          <div class="surface-floating shadow-card" style="border-radius:2px;padding:28px;border:1px solid rgba(194,194,198,0.06);">
+            <blockquote style="font-size:1.05rem;font-weight:300;line-height:1.6;color:#c2c2c6;font-style:italic;margin:0 0 20px;">"My jawline definition improved more in 3 months than I expected in a year."</blockquote>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=72&h=72&q=80" alt="Marcus T." style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div>
+                <div style="font-size:0.8rem;color:#e0e0e2;font-weight:500;">Marcus T.</div>
+                <div style="font-size:0.7rem;color:#4a4a52;letter-spacing:0.04em;">90-day program · Age 22</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="surface-floating shadow-card" style="border-radius:2px;padding:28px;border:1px solid rgba(194,194,198,0.06);margin-top:24px;">
+            <blockquote style="font-size:1.05rem;font-weight:300;line-height:1.6;color:#c2c2c6;font-style:italic;margin:0 0 20px;">"The skin protocol alone cleared my acne in 6 weeks. I finally understand ingredients."</blockquote>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=72&h=72&q=80" alt="Alex R." style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div>
+                <div style="font-size:0.8rem;color:#e0e0e2;font-weight:500;">Alex R.</div>
+                <div style="font-size:0.7rem;color:#4a4a52;letter-spacing:0.04em;">Foundation program · Age 19</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="surface-floating shadow-card" style="border-radius:2px;padding:28px;border:1px solid rgba(194,194,198,0.06);">
+            <blockquote style="font-size:1.05rem;font-weight:300;line-height:1.6;color:#c2c2c6;font-style:italic;margin:0 0 20px;">"Never thought posture could change how sharp my face looks. It absolutely does."</blockquote>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=72&h=72&q=80" alt="Jordan K." style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div>
+                <div style="font-size:0.8rem;color:#e0e0e2;font-weight:500;">Jordan K.</div>
+                <div style="font-size:0.7rem;color:#4a4a52;letter-spacing:0.04em;">Elite program · Age 25</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="surface-floating shadow-card" style="border-radius:2px;padding:28px;border:1px solid rgba(194,194,198,0.06);margin-top:24px;">
+            <blockquote style="font-size:1.05rem;font-weight:300;line-height:1.6;color:#c2c2c6;font-style:italic;margin:0 0 20px;">"Sleep and nutrition changes I didn't expect gave me a 180 in 60 days."</blockquote>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+                <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=72&h=72&q=80" alt="Kai M." style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div>
+                <div style="font-size:0.8rem;color:#e0e0e2;font-weight:500;">Kai M.</div>
+                <div style="font-size:0.7rem;color:#4a4a52;letter-spacing:0.04em;">Elite program · Age 28</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROGRAMS ===== -->
+  <section id="programs" class="glow-gold" style="padding:120px 32px;border-top:1px solid rgba(194,194,198,0.06);">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:72px;">
+        <div class="section-label" style="margin-bottom:16px;">Choose your path</div>
+        <h2 class="font-display" style="font-size:clamp(2.2rem,4vw,3.5rem);font-weight:300;letter-spacing:-0.03em;color:#f8edca;line-height:1.1;">Programs built for<br/><em style="color:#d9a020;">every starting point</em></h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
+
+        <!-- Foundation -->
+        <div class="surface-elevated shadow-card" style="border-radius:2px;padding:40px 32px;border:1px solid rgba(194,194,198,0.06);position:relative;overflow:hidden;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div class="section-label" style="margin-bottom:20px;">Foundation</div>
+          <div class="font-display" style="font-size:3rem;font-weight:300;color:#f8edca;letter-spacing:-0.03em;line-height:1;margin-bottom:6px;">$49</div>
+          <div style="font-size:0.72rem;color:#4a4a52;letter-spacing:0.06em;margin-bottom:32px;">/ month</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:40px;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#b8841a;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#9a9aa0;">Skincare protocol (AM/PM)</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#b8841a;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#9a9aa0;">Basic grooming guide</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#b8841a;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#9a9aa0;">Community access</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#32323a;font-size:0.8rem;">✗</span>
+              <span style="font-size:0.875rem;color:#32323a;">Structure training</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#32323a;font-size:0.8rem;">✗</span>
+              <span style="font-size:0.875rem;color:#32323a;">1-on-1 coaching</span>
+            </div>
+          </div>
+          <button class="btn-ghost" style="width:100%;justify-content:center;">Get started</button>
+        </div>
+
+        <!-- Elite — featured -->
+        <div class="shadow-elevated" style="border-radius:2px;padding:40px 32px;position:relative;overflow:hidden;background:linear-gradient(160deg,#22222a 0%,#1a1a22 100%);border:1px solid rgba(217,160,32,0.2);transform:translateY(-12px);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);" onmouseover="this.style.transform='translateY(-18px)'" onmouseout="this.style.transform='translateY(-12px)'">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,#d9a020,transparent);"></div>
+          <div style="position:absolute;top:16px;right:16px;background:linear-gradient(135deg,#d9a020,#8f6313);padding:4px 10px;border-radius:1px;">
+            <span style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:#0d0d13;font-weight:600;">Most popular</span>
+          </div>
+          <div class="section-label" style="margin-bottom:20px;color:#d9a020;">Elite</div>
+          <div class="font-display" style="font-size:3rem;font-weight:300;color:#f8edca;letter-spacing:-0.03em;line-height:1;margin-bottom:6px;">$97</div>
+          <div style="font-size:0.72rem;color:#4a4a52;letter-spacing:0.06em;margin-bottom:32px;">/ month</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:40px;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#d9a020;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#c2c2c6;">Full 4-pillar protocol</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#d9a020;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#c2c2c6;">Structure & mewing program</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#d9a020;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#c2c2c6;">Daily habit tracker</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#d9a020;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#c2c2c6;">Progress photo analysis</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#32323a;font-size:0.8rem;">✗</span>
+              <span style="font-size:0.875rem;color:#32323a;">1-on-1 coaching</span>
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%;justify-content:center;font-size:0.7rem;">Join Elite</button>
+        </div>
+
+        <!-- Apex -->
+        <div class="surface-elevated shadow-card" style="border-radius:2px;padding:40px 32px;border:1px solid rgba(194,194,198,0.06);position:relative;overflow:hidden;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div class="section-label" style="margin-bottom:20px;">Apex</div>
+          <div class="font-display" style="font-size:3rem;font-weight:300;color:#f8edca;letter-spacing:-0.03em;line-height:1;margin-bottom:6px;">$249</div>
+          <div style="font-size:0.72rem;color:#4a4a52;letter-spacing:0.06em;margin-bottom:32px;">/ month</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:40px;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#b8841a;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#9a9aa0;">Everything in Elite</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#b8841a;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#9a9aa0;">Weekly 1-on-1 coaching</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#b8841a;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#9a9aa0;">Custom protocol build</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#b8841a;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#9a9aa0;">Priority community + Discord</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:#b8841a;font-size:0.8rem;">✓</span>
+              <span style="font-size:0.875rem;color:#9a9aa0;">Product recommendations</span>
+            </div>
+          </div>
+          <button class="btn-ghost" style="width:100%;justify-content:center;">Apply now</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq" style="padding:120px 32px;background:#16161e;border-top:1px solid rgba(194,194,198,0.06);">
+    <div style="max-width:720px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:72px;">
+        <div class="section-label" style="margin-bottom:16px;">Questions</div>
+        <h2 class="font-display" style="font-size:clamp(2rem,3.5vw,3rem);font-weight:300;letter-spacing:-0.03em;color:#f8edca;line-height:1.1;">Common <em style="color:#d9a020;">questions</em></h2>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <!-- FAQ item -->
+        <details style="border-top:1px solid rgba(194,194,198,0.08);padding:24px 0;cursor:pointer;list-style:none;" class="faq-item">
+          <summary style="display:flex;justify-content:space-between;align-items:center;font-size:0.95rem;color:#c2c2c6;font-weight:400;cursor:pointer;list-style:none;outline:none;">
+            Does this actually work without surgery?
+            <span style="color:#d9a020;font-size:1.2rem;flex-shrink:0;margin-left:16px;font-weight:300;transition:transform 0.2s ease;" class="faq-icon">+</span>
+          </summary>
+          <p style="font-size:0.875rem;line-height:1.7;color:#6e6e76;margin-top:16px;margin-bottom:0;">Yes — bone remodeling from consistent mewing, muscle development from jaw exercises, and skin improvements from proper actives are all documented. Results compound slowly but are permanent when maintained.</p>
+        </details>
+
+        <details style="border-top:1px solid rgba(194,194,198,0.08);padding:24px 0;cursor:pointer;" class="faq-item">
+          <summary style="display:flex;justify-content:space-between;align-items:center;font-size:0.95rem;color:#c2c2c6;font-weight:400;cursor:pointer;list-style:none;outline:none;">
+            How long until I see results?
+            <span style="color:#d9a020;font-size:1.2rem;flex-shrink:0;margin-left:16px;font-weight:300;" class="faq-icon">+</span>
+          </summary>
+          <p style="font-size:0.875rem;line-height:1.7;color:#6e6e76;margin-top:16px;margin-bottom:0;">Skin: 4–6 weeks. Grooming: immediate. Structure changes: 3–6 months of consistent effort. Lifestyle improvements (sleep, nutrition): 2–4 weeks for noticeable energy and skin texture changes.</p>
+        </details>
+
+        <details style="border-top:1px solid rgba(194,194,198,0.08);padding:24px 0;cursor:pointer;" class="faq-item">
+          <summary style="display:flex;justify-content:space-between;align-items:center;font-size:0.95rem;color:#c2c2c6;font-weight:400;cursor:pointer;list-style:none;outline:none;">
+            Is the program suitable for all ages?
+            <span style="color:#d9a020;font-size:1.2rem;flex-shrink:0;margin-left:16px;font-weight:300;" class="faq-icon">+</span>
+          </summary>
+          <p style="font-size:0.875rem;line-height:1.7;color:#6e6e76;margin-top:16px;margin-bottom:0;">Our protocols are designed for ages 16–35. Younger members see faster structural results due to bone plasticity. Older members benefit most from skin, grooming, and lifestyle pillars.</p>
+        </details>
+
+        <details style="border-top:1px solid rgba(194,194,198,0.08);border-bottom:1px solid rgba(194,194,198,0.08);padding:24px 0;cursor:pointer;" class="faq-item">
+          <summary style="display:flex;justify-content:space-between;align-items:center;font-size:0.95rem;color:#c2c2c6;font-weight:400;cursor:pointer;list-style:none;outline:none;">
+            Can I cancel anytime?
+            <span style="color:#d9a020;font-size:1.2rem;flex-shrink:0;margin-left:16px;font-weight:300;" class="faq-icon">+</span>
+          </summary>
+          <p style="font-size:0.875rem;line-height:1.7;color:#6e6e76;margin-top:16px;margin-bottom:0;">Yes, all plans are month-to-month with no contracts. Cancel anytime from your dashboard — no questions, no retention tactics.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section style="padding:120px 32px;position:relative;overflow:hidden;" class="surface-base">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(185,132,26,0.1) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="max-width:640px;margin:0 auto;text-align:center;position:relative;z-index:1;">
+      <div style="width:1px;height:60px;background:linear-gradient(to bottom,transparent,rgba(217,160,32,0.4));margin:0 auto 40px;"></div>
+      <div class="section-label" style="margin-bottom:20px;">Ready to begin?</div>
+      <h2 class="font-display" style="font-size:clamp(2.5rem,5vw,4rem);font-weight:300;letter-spacing:-0.03em;color:#f8edca;line-height:1.05;margin-bottom:24px;">Your peak is<br/><em style="color:#d9a020;">90 days away.</em></h2>
+      <p style="font-size:0.95rem;line-height:1.7;color:#6e6e76;margin-bottom:40px;">Join 24,000+ members who chose to take control of their appearance. The protocol starts the day you sign up.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-primary" style="font-size:0.72rem;padding:16px 40px;">Build My Protocol</button>
+        <button class="btn-ghost" style="padding:16px 32px;">View programs</button>
+      </div>
+      <p style="font-size:0.72rem;color:#32323a;margin-top:20px;letter-spacing:0.04em;">30-day money-back guarantee · Cancel anytime</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="background:#0d0d13;border-top:1px solid rgba(194,194,198,0.06);padding:48px 32px;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:20px;height:20px;background:linear-gradient(135deg,#d9a020,#8f6313);clip-path:polygon(50% 0%,100% 100%,0% 100%);flex-shrink:0;"></div>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;letter-spacing:0.04em;color:#6e6e76;">APEX</span>
+      </div>
+      <div style="display:flex;gap:32px;">
+        <a href="#" style="font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#4a4a52;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#9a9aa0'" onmouseout="this.style.color='#4a4a52'">Privacy</a>
+        <a href="#" style="font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#4a4a52;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#9a9aa0'" onmouseout="this.style.color='#4a4a52'">Terms</a>
+        <a href="#" style="font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#4a4a52;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#9a9aa0'" onmouseout="this.style.color='#4a4a52'">Contact</a>
+      </div>
+      <div style="font-size:0.7rem;color:#32323a;letter-spacing:0.04em;">© 2026 Apex Aesthetics. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // FAQ icon toggle
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('toggle', () => {
+        const icon = item.querySelector('.faq-icon');
+        if (icon) icon.textContent = item.open ? '−' : '+';
+      });
+    });
+
+    // Ripple effect on all buttons
+    document.querySelectorAll('.btn-primary, .btn-ghost').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * 2;
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `
+          position:absolute;width:${size}px;height:${size}px;border-radius:50%;
+          background:rgba(255,255,255,0.18);pointer-events:none;
+          left:${e.clientX - rect.left - size / 2}px;
+          top:${e.clientY - rect.top - size / 2}px;
+          transform:scale(0);animation:ripple 0.55s ease-out forwards;
+        `;
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+
+    // Subtle 3-D tilt on gallery images
+    document.querySelectorAll('.gallery-img').forEach(el => {
+      el.addEventListener('mousemove', function(e) {
+        const r = this.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        this.style.transform = `perspective(600px) rotateY(${x * 4}deg) rotateX(${-y * 4}deg) scale(1.01)`;
+        this.style.transition = 'transform 0.1s ease';
+      });
+      el.addEventListener('mouseleave', function() {
+        this.style.transform = '';
+        this.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1)';
+      });
+    });
+  </script>
+</body>
+</html>
