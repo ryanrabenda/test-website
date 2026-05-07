@@ -157,12 +157,24 @@
     .img-treatment::after {
       content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(13,13,19,0.7) 0%, rgba(13,13,19,0.1) 50%, transparent 100%);
+      background: linear-gradient(to top, rgba(13,13,19,0.72) 0%, rgba(13,13,19,0.12) 45%, transparent 100%);
     }
     .img-treatment::before {
       content: '';
       position: absolute; inset: 0; z-index: 1;
       background: rgba(185,132,26,0.12);
+      mix-blend-mode: multiply;
+    }
+
+    /* Hero-specific image treatment — stronger vignette + gold pop */
+    .hero-img::after {
+      background:
+        radial-gradient(ellipse 80% 100% at 50% 100%, rgba(13,13,19,0.85) 0%, rgba(13,13,19,0.3) 50%, transparent 70%),
+        radial-gradient(ellipse 100% 60% at 0% 50%, rgba(13,13,19,0.55) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 60% at 100% 50%, rgba(13,13,19,0.35) 0%, transparent 50%);
+    }
+    .hero-img::before {
+      background: rgba(185,132,26,0.18);
       mix-blend-mode: multiply;
     }
 
@@ -333,8 +345,8 @@
       <!-- Right: Image stack -->
       <div style="position:relative;">
         <!-- Main image -->
-        <div class="img-treatment shadow-elevated" style="border-radius:2px;height:560px;border:1px solid rgba(217,160,32,0.15);">
-          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=85" alt="Male model portrait" style="filter:grayscale(15%) contrast(1.08);object-position:center top;" />
+        <div class="img-treatment hero-img shadow-elevated" style="border-radius:2px;height:580px;border:1px solid rgba(217,160,32,0.2);">
+          <img src="hero.jpg" alt="Peak aesthetics" style="object-position:center top;filter:contrast(1.22) saturate(0.78) brightness(0.92) drop-shadow(0 8px 24px rgba(0,0,0,0.6));" />
         </div>
         <!-- Floating card -->
         <div class="surface-floating shadow-card" style="position:absolute;bottom:32px;left:-32px;padding:20px 24px;border-radius:2px;border:1px solid rgba(217,160,32,0.2);min-width:200px;box-shadow:0 2px 4px rgba(0,0,0,0.5),0 12px 32px rgba(0,0,0,0.4),0 0 0 1px rgba(217,160,32,0.05),0 8px 24px rgba(217,160,32,0.06);">
